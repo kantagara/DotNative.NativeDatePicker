@@ -32,7 +32,7 @@ import UIKit
 
 @MainActor private final class NativeDateDialog: UIViewController {
   private let picker = UIDatePicker()
-  private let panel = UIView()
+  private let panel = UIScrollView()
   private let completion: (String?) -> Void
   private let titleText: String
   private let saveText: String
@@ -89,7 +89,7 @@ import UIKit
     title.textColor = foreground
     panel.addSubview(title)
     picker.datePickerMode = .date
-    picker.preferredDatePickerStyle = .wheels
+    picker.preferredDatePickerStyle = .inline
     picker.calendar = Self.calendar
     picker.minimumDate = Self.calendar.date(from: minimum)
     picker.maximumDate = Self.calendar.date(from: maximum)
@@ -111,14 +111,27 @@ import UIKit
   }
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    let width = min(328, view.bounds.width - 80)
+    let safe = view.safeAreaInsets
+    let width = min(360, view.bounds.width - safe.left - safe.right - 32)
+    let calendarWidth = width - 28
+    let calendarHeight = max(
+      320,
+      picker.sizeThatFits(
+        CGSize(width: calendarWidth, height: CGFloat.greatestFiniteMagnitude)
+      ).height)
+    let actionsY = 64 + calendarHeight + 8
+    let contentHeight = actionsY + 56
+    let availableHeight = view.bounds.height - safe.top - safe.bottom - 32
+    let height = min(contentHeight, availableHeight)
     panel.frame = CGRect(
-      x: (view.bounds.width - width) / 2, y: (view.bounds.height - 276) / 2, width: width,
-      height: 276)
+      x: (view.bounds.width - width) / 2,
+      y: safe.top + (view.bounds.height - safe.top - safe.bottom - height) / 2,
+      width: width, height: height)
+    panel.contentSize = CGSize(width: width, height: contentHeight)
     panel.viewWithTag(1)?.frame = CGRect(x: 24, y: 20, width: width - 48, height: 36)
-    picker.frame = CGRect(x: 14, y: 64, width: width - 28, height: 160)
-    panel.viewWithTag(2)?.frame = CGRect(x: width - 184, y: 224, width: 88, height: 44)
-    panel.viewWithTag(3)?.frame = CGRect(x: width - 96, y: 224, width: 88, height: 44)
+    picker.frame = CGRect(x: 14, y: 64, width: calendarWidth, height: calendarHeight)
+    panel.viewWithTag(2)?.frame = CGRect(x: width - 184, y: actionsY, width: 88, height: 44)
+    panel.viewWithTag(3)?.frame = CGRect(x: width - 96, y: actionsY, width: 88, height: 44)
   }
   @objc private func confirm() {
     let formatter = DateFormatter()

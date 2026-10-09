@@ -1,6 +1,8 @@
 # DotNative.NativeDatePicker
 
-Operating-system date controls: UIDatePicker on iOS and DatePickerDialog on Android.
+Operating-system calendar date controls: inline UIDatePicker on iOS, calendar
+DatePickerDialog on Android, NSDatePicker on macOS, GTK Calendar on Linux,
+and the Windows native date control with its drop-down calendar.
 
 ## Usage
 
