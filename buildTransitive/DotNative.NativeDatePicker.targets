@@ -11,4 +11,16 @@
     <DotNativeNativeSource Include="$(MSBuildThisFileDirectory)../Platform/Android/**/*.kt" />
     <DotNativePluginEntry Include="DotNativeNativeDatePickerPlugin" />
   </ItemGroup>
+  <ItemGroup Condition="$([System.String]::Copy('$(RuntimeIdentifier)').StartsWith('osx-'))">
+    <DotNativeNativeSource Include="$(MSBuildThisFileDirectory)../Platform/Mac/**/*.swift" />
+    <DotNativePluginEntry Include="DotNativeNativeDatePickerPlugin" />
+  </ItemGroup>
+  <ItemGroup Condition="$([System.String]::Copy('$(RuntimeIdentifier)').StartsWith('win-'))">
+    <DotNativeNativeSource Include="$(MSBuildThisFileDirectory)../Platform/Windows/**/*.cpp" />
+    <DotNativePluginEntry Include="DotNativeNativeDatePickerPlugin" />
+  </ItemGroup>
+  <ItemGroup Condition="$([System.String]::Copy('$(RuntimeIdentifier)').StartsWith('linux-')) and !$([System.String]::Copy('$(RuntimeIdentifier)').StartsWith('linux-bionic-'))">
+    <DotNativeNativeSource Include="$(MSBuildThisFileDirectory)../Platform/Linux/**/*.cpp" />
+    <DotNativePluginEntry Include="DotNativeNativeDatePickerPlugin" />
+  </ItemGroup>
 </Project>

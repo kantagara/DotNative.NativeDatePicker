@@ -31,7 +31,9 @@ The .NET 9 SDK builds only net9.0; the .NET 10 SDK also builds net10.0 with C# 1
 
 ## Platforms
 
-Android and iOS are implemented. Desktop implementations are not included.
+Implementations are included for Android (DatePickerDialog), iOS (UIDatePicker),
+macOS (NSDatePicker), Linux (GTK Calendar), and Windows (OS date control).
+Windows and Linux require runtime verification on their own operating systems.
 
 ## Source development
 

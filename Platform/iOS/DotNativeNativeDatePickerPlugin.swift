@@ -3,6 +3,7 @@ import UIKit
 @MainActor enum DotNativeNativeDatePickerPlugin {
   private static var active: NativeDateDialog?
   static func register() {
+    NativeChannels.channel("dotnative.nativedatepicker").onReset = { active?.cancel() }
     NativeChannels.channel("dotnative.nativedatepicker").handle("show") { args, reply in
       guard let options = DateOptions(args) else {
         reply.failure("invalid_arguments", "Expected valid date picker options")
@@ -18,6 +19,7 @@ import UIKit
         active = nil
         reply.success(date.map { .string($0) } ?? .null)
       }
+      reply.onCancel = { [weak dialog] in dialog?.cancel() }
       active = dialog
       presenter.present(dialog, animated: true)
     }

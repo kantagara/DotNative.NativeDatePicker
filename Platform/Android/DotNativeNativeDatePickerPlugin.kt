@@ -10,6 +10,7 @@ private var activeNativeDatePicker: Dialog? = null
 
 fun DotNativeNativeDatePickerPlugin(activity: Activity) {
     val channel = NativeChannels.channel("dotnative.nativedatepicker")
+    channel.onReset = { activeNativeDatePicker?.dismiss() }
     channel.handle("show") { args, reply ->
         val map = args as? Map<*, *>
         fun date(key: String): Calendar? {
@@ -82,6 +83,7 @@ fun DotNativeNativeDatePickerPlugin(activity: Activity) {
             dialog.setButton(Dialog.BUTTON_NEGATIVE, cancel) { _, _ -> finish(null) }
             dialog.setOnCancelListener { finish(null) }
             dialog.setOnDismissListener { finish(null) }
+            reply.onCancel = { dialog.dismiss() }
             activeNativeDatePicker = dialog
             dialog.show()
         }

@@ -1,7 +1,7 @@
 using DotNative;
 using DotNative.NativeDatePicker;
 
-namespace PluginExample;
+namespace NativeDatePickerDemo;
 
 public static class Program
 {
